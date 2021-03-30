@@ -4,10 +4,13 @@
 # Copyright (C) 2020  Janar Sööt <janar.soot@gmail.com>
 #
 # This file may be distributed under the terms of the GNU GPLv3 license.
-import os, logging, ast, re
+import os, logging, ast, re, sys
 from string import Template
 from . import menu_keys
 
+UNICODE_STRING_TYPE = str
+if sys.version_info.major == 2:
+    UNICODE_STRING_TYPE = unicode
 
 class sentinel:
     pass
@@ -348,7 +351,7 @@ class MenuContainer(MenuElement):
     def update_items(self):
         _a = [(item, name) for item, name in self._allitems
               if item.is_enabled()]
-        self._items, self._names = zip(*_a) or ([], [])
+        self._items, self._names = list(zip(*_a)) or ([], [])
 
     # select methods
     def init_selection(self):
@@ -1057,8 +1060,8 @@ class MenuManager:
     def aslatin(cls, s):
         if isinstance(s, str):
             return s
-        elif isinstance(s, unicode):
-            return unicode(s).encode('latin-1', 'ignore')
+        elif isinstance(s, UNICODE_STRING_TYPE):
+            return UNICODE_STRING_TYPE(s).encode('latin-1', 'ignore')
         else:
             return str(s)
 

@@ -387,8 +387,8 @@ class MessageParser:
             all_messages = dict(commands)
             all_messages.update(responses)
             all_messages.update(output)
-            self._init_messages(all_messages, commands.values(),
-                                output.values())
+            self._init_messages(all_messages, list(commands.values()),
+                                list(output.values()))
             self.config.update(data.get('config', {}))
             self.version = data.get('version', '')
             self.build_versions = data.get('build_versions', '')

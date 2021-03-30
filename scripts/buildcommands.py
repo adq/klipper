@@ -281,7 +281,7 @@ class HandleCommandGeneration:
     def create_message_ids(self):
         # Create unique ids for each message type
         msgid = max(self.msg_to_id.values())
-        for msgname in self.commands.keys() + [m for n, m in self.encoders]:
+        for msgname in list(self.commands.keys()) + [m for n, m in self.encoders]:
             msg = self.messages_by_name.get(msgname, msgname)
             if msg not in self.msg_to_id:
                 msgid += 1

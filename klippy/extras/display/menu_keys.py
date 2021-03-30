@@ -52,7 +52,7 @@ class MenuKeys:
                 buttons.register_buttons([pin], callback)
             return
         try:
-            amin, amax = map(float, analog_range.split(','))
+            amin, amax = list(map(float, analog_range.split(',')))
         except:
             raise config.error("Unable to parse analog_range_" + name)
         pullup = config.getfloat('analog_pullup_resistor', 4700., above=0.)

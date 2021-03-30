@@ -129,8 +129,7 @@ class HTU21D:
             logging.warn("htu21d: Reading deviceId !Checksum error!")
         rdevId = rdevId >> 8
         deviceId_list = list(
-            filter(
-              lambda elem: HTU21D_DEVICES[elem]['id'] == rdevId,HTU21D_DEVICES)
+            [elem for elem in HTU21D_DEVICES if HTU21D_DEVICES[elem]['id'] == rdevId]
             )
         if len(deviceId_list) != 0:
             logging.info("htu21d: Found Device Type %s" % deviceId_list[0])

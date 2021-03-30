@@ -173,7 +173,7 @@ class PrinterConfig:
             return
         data = '\n'.join(buffer)
         del buffer[:]
-        sbuffer = StringIO.StringIO(data)
+        sbuffer = StringIO(data)
         fileconfig.readfp(sbuffer, filename)
     def _resolve_include(self, source_filename, include_spec, fileconfig,
                          visited):

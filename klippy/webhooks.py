@@ -6,6 +6,10 @@
 import logging, socket, os, sys, errno, json
 import gcode
 
+UNICODE_STRING_TYPE = str
+if sys.version_info.major == 2:
+    UNICODE_STRING_TYPE = unicode
+
 # Json decodes strings as unicode types in Python 2.x.  This doesn't
 # play well with some parts of Klipper (particuarly displays), so we
 # need to create an object hook. This solution borrowed from:
@@ -13,7 +17,7 @@ import gcode
 # https://stackoverflow.com/questions/956867/
 #
 def byteify(data, ignore_dicts=False):
-    if isinstance(data, unicode):
+    if isinstance(data, UNICODE_STRING_TYPE):
         return data.encode('utf-8')
     if isinstance(data, list):
         return [byteify(i, True) for i in data]
