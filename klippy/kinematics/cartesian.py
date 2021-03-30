@@ -14,8 +14,8 @@ class CartKinematics:
         self.dual_carriage_rails = []
         self.rails = [stepper.LookupMultiRail(config.getsection('stepper_' + n))
                       for n in 'xyz']
-        for rail, axis in zip(self.rails, b'xyz'):
-            rail.setup_itersolve('cartesian_stepper_alloc', axis)
+        for rail, axis in zip(self.rails, 'xyz'):
+            rail.setup_itersolve('cartesian_stepper_alloc', ord(axis))
         for s in self.get_steppers():
             s.set_trapq(toolhead.get_trapq())
             toolhead.register_step_generator(s.generate_steps)
@@ -40,10 +40,10 @@ class CartKinematics:
         # Check for dual carriage support
         if config.has_section('dual_carriage'):
             dc_config = config.getsection('dual_carriage')
-            dc_axis = dc_config.getchoice('axis', {'x': b'x', 'y': b'y'})
+            dc_axis = dc_config.getchoice('axis', {'x': 'x', 'y': 'y'})
             self.dual_carriage_axis = {'x': 0, 'y': 1}[dc_axis]
             dc_rail = stepper.LookupMultiRail(dc_config)
-            dc_rail.setup_itersolve('cartesian_stepper_alloc', dc_axis)
+            dc_rail.setup_itersolve('cartesian_stepper_alloc', ord(dc_axis))
             for s in dc_rail.get_steppers():
                 toolhead.register_step_generator(s.generate_steps)
             dc_rail.set_max_jerk(max_halt_velocity, max_accel)
