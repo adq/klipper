@@ -6,6 +6,10 @@
 # This file may be distributed under the terms of the GNU GPLv3 license.
 import sys, os.path, unicodedata
 
+READ_TEXT_MODE = 'r'
+if sys.version_info.major == 2:
+    READ_TEXT_MODE = 'rb'
+
 HaveError = False
 
 def report_error(filename, lineno, msg):
@@ -18,7 +22,7 @@ def report_error(filename, lineno, msg):
 def check_file(filename):
     # Open and read file
     try:
-        f = open(filename, 'rb')
+        f = open(filename, READ_TEXT_MODE)
         data = f.read()
         f.close()
     except IOError:

@@ -11,9 +11,9 @@ except ImportError:
     import ConfigParser as configparser
     from StringIO import StringIO
 
-OPEN_MODE = 'r'
+READ_TEXT_MODE = 'r'
 if sys.version_info.major == 2:
-    OPEN_MODE = 'rb'
+    READ_TEXT_MODE = 'rb'
 
 error = configparser.Error
 
@@ -116,7 +116,7 @@ class PrinterConfig:
         return self.printer
     def _read_config_file(self, filename):
         try:
-            f = open(filename, OPEN_MODE)
+            f = open(filename, READ_TEXT_MODE)
             data = f.read()
             f.close()
         except:

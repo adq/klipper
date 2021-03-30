@@ -4,8 +4,12 @@
 # Copyright (C) 2016-2019  Kevin O'Connor <kevin@koconnor.net>
 #
 # This file may be distributed under the terms of the GNU GPLv3 license.
-import optparse, datetime
+import optparse, datetime, sys
 import matplotlib
+
+READ_TEXT_MODE = 'r'
+if sys.version_info.major == 2:
+    READ_TEXT_MODE = 'rb'
 
 MAXBANDWIDTH=25000.
 MAXBUFFER=2.
@@ -23,7 +27,7 @@ def parse_log(logname, mcu):
         mcu = "mcu"
     mcu_prefix = mcu + ":"
     apply_prefix = { p: 1 for p in APPLY_PREFIX }
-    f = open(logname, 'rb')
+    f = open(logname, READ_TEXT_MODE)
     out = []
     for line in f:
         parts = line.split()

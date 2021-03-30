@@ -3,14 +3,18 @@
 # Copyright (C) 2018-2020  Kevin O'Connor <kevin@koconnor.net>
 #
 # This file may be distributed under the terms of the GNU GPLv3 license.
-import os, time, logging
+import os, time, logging, sys
+
+READ_TEXT_MODE = 'r'
+if sys.version_info.major == 2:
+    READ_TEXT_MODE = 'rb'
 
 def get_os_stats(eventtime):
     # Get core usage stats
     msg = "sysload=%.2f cputime=%.3f" % (os.getloadavg()[0], time.clock())
     # Get available system memory
     try:
-        f = open("/proc/meminfo", "rb")
+        f = open("/proc/meminfo", READ_TEXT_MODE)
         data = f.read()
         f.close()
         for line in data.split('\n'):

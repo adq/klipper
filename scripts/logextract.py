@@ -6,6 +6,10 @@
 # This file may be distributed under the terms of the GNU GPLv3 license.
 import sys, re, collections, ast
 
+READ_TEXT_MODE = 'r'
+if sys.version_info.major == 2:
+    READ_TEXT_MODE = 'rb'
+
 def format_comment(line_num, line):
     return "# %6d: %s" % (line_num, line)
 
@@ -416,7 +420,7 @@ def main():
     handler = None
     recent_lines = collections.deque([], 200)
     # Parse log file
-    f = open(logname, 'rb')
+    f = open(logname, READ_TEXT_MODE)
     for line_num, line in enumerate(f):
         line = line.rstrip()
         line_num += 1

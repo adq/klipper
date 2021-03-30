@@ -4,6 +4,9 @@
 #
 # This file may be distributed under the terms of the GNU GPLv3 license.
 import sys, os, optparse, logging, subprocess
+READ_TEXT_MODE = 'r'
+if sys.version_info.major == 2:
+    READ_TEXT_MODE = 'rb'
 
 TEMP_GCODE_FILE = "_test_.gcode"
 TEMP_LOG_FILE = "_test_.log"
@@ -37,7 +40,7 @@ class TestCase:
         config_fname = gcode_fname = dict_fnames = None
         should_fail = multi_tests = False
         gcode = []
-        f = open(self.fname, 'rb')
+        f = open(self.fname, READ_TEXT_MODE)
         for line in f:
             cpos = line.find('#')
             if cpos >= 0:
@@ -126,7 +129,7 @@ class TestCase:
             return "internal error"
         return "success"
     def show_log(self):
-        f = open(TEMP_LOG_FILE, 'rb')
+        f = open(TEMP_LOG_FILE, READ_TEXT_MODE)
         data = f.read()
         f.close()
         sys.stdout.write(data)

@@ -8,6 +8,10 @@ import sys, os, gc, optparse, logging, time, collections, importlib
 import util, reactor, queuelogger, msgproto
 import gcode, configfile, pins, mcu, toolhead, webhooks
 
+READ_TEXT_MODE = 'r'
+if sys.version_info.major == 2:
+    READ_TEXT_MODE = 'rb'
+
 message_ready = "Printer is ready"
 
 message_startup = """
@@ -282,7 +286,7 @@ def main():
         debuglevel = logging.DEBUG
     if options.debuginput:
         start_args['debuginput'] = options.debuginput
-        debuginput = open(options.debuginput, 'rb')
+        debuginput = open(options.debuginput, READ_TEXT_MODE)
         start_args['gcode_fd'] = debuginput.fileno()
     else:
         start_args['gcode_fd'] = util.create_pty(options.inputtty)
