@@ -14,7 +14,7 @@ class CartKinematics:
         self.dual_carriage_rails = []
         self.rails = [stepper.LookupMultiRail(config.getsection('stepper_' + n))
                       for n in 'xyz']
-        for rail, axis in zip(self.rails, b'xyz'):
+        for rail, axis in zip(self.rails, [b'x', b'y', b'z']):
             rail.setup_itersolve('cartesian_stepper_alloc', axis)
         for s in self.get_steppers():
             s.set_trapq(toolhead.get_trapq())
