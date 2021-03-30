@@ -3,13 +3,17 @@
 # Copyright (C) 2016-2021  Kevin O'Connor <kevin@koconnor.net>
 #
 # This file may be distributed under the terms of the GNU GPLv3 license.
-import os, glob, re, time, logging
+import os, glob, re, time, logging, sys
 try:
     import configparser
     from io import StringIO
 except ImportError:
     import ConfigParser as configparser
     from StringIO import StringIO
+
+OPEN_MODE = 'r'
+if sys.version_info.major == 2:
+    OPEN_MODE = 'rb'
 
 error = configparser.Error
 
@@ -112,7 +116,7 @@ class PrinterConfig:
         return self.printer
     def _read_config_file(self, filename):
         try:
-            f = open(filename, 'rb')
+            f = open(filename, OPEN_MODE)
             data = f.read()
             f.close()
         except:

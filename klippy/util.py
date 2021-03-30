@@ -6,6 +6,9 @@
 import sys, os, pty, fcntl, termios, signal, logging, json, time
 import subprocess, traceback, shlex
 
+OPEN_MODE = 'r'
+if sys.version_info.major == 2:
+    OPEN_MODE = 'rb'
 
 ######################################################################
 # Low-level Unix commands
@@ -67,7 +70,7 @@ def dump_mcu_build():
     # Try to log last mcu config
     dump_file_stats(build_dir, '.config')
     try:
-        f = open(os.path.join(build_dir, '.config'), 'rb')
+        f = open(os.path.join(build_dir, '.config'), OPEN_MODE)
         data = f.read(32*1024)
         f.close()
         logging.info("========= Last MCU build config =========\n%s"
@@ -77,7 +80,7 @@ def dump_mcu_build():
     # Try to log last mcu build version
     dump_file_stats(build_dir, 'out/klipper.dict')
     try:
-        f = open(os.path.join(build_dir, 'out/klipper.dict'), 'rb')
+        f = open(os.path.join(build_dir, 'out/klipper.dict'), OPEN_MODE)
         data = f.read(32*1024)
         f.close()
         data = json.loads(data)
@@ -96,7 +99,7 @@ def dump_mcu_build():
 
 def get_cpu_info():
     try:
-        f = open('/proc/cpuinfo', 'rb')
+        f = open('/proc/cpuinfo', OPEN_MODE)
         data = f.read()
         f.close()
     except (IOError, OSError) as e:
