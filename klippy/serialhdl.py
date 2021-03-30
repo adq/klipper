@@ -3,7 +3,7 @@
 # Copyright (C) 2016-2021  Kevin O'Connor <kevin@koconnor.net>
 #
 # This file may be distributed under the terms of the GNU GPLv3 license.
-import logging, threading, os
+import logging, threading, os, sys
 import serial
 
 import msgproto, chelper, util
@@ -74,9 +74,12 @@ class SerialReader:
                 identify_data += msgdata
     def _start_session(self, serial_dev, serial_fd_type='u', client_id=0):
         self.serial_dev = serial_dev
+        if sys.version_info.major > 2:
+            if isinstance(serial_fd_type, str):
+                serial_fd_type = serial_fd_type.encode()
         self.serialqueue = self.ffi_main.gc(
             self.ffi_lib.serialqueue_alloc(serial_dev.fileno(),
-                                           ord(serial_fd_type), client_id),
+                                           serial_fd_type, client_id),
             self.ffi_lib.serialqueue_free)
         self.background_thread = threading.Thread(target=self._bg_thread)
         self.background_thread.start()

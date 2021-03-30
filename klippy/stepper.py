@@ -3,7 +3,7 @@
 # Copyright (C) 2016-2021  Kevin O'Connor <kevin@koconnor.net>
 #
 # This file may be distributed under the terms of the GNU GPLv3 license.
-import math, logging, collections
+import math, logging, collections, sys
 import chelper
 
 class error(Exception):
@@ -185,7 +185,10 @@ class MCU_stepper:
             raise error("Internal error in stepcompress")
     def is_active_axis(self, axis):
         ffi_main, ffi_lib = chelper.get_ffi()
-        return ffi_lib.itersolve_is_active_axis(self._stepper_kinematics, ord(axis))
+        if sys.version_info.major > 2:
+            if isinstance(axis, str):
+                axis = axis.encode()
+        return ffi_lib.itersolve_is_active_axis(self._stepper_kinematics, axis)
 
 # Helper code to build a stepper object from a config section
 def PrinterStepper(config, units_in_radians=False):
