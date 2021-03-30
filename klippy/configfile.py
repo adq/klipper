@@ -12,8 +12,10 @@ except ImportError:
     from StringIO import StringIO
 
 READ_TEXT_MODE = 'r'
+WRITE_TEXT_MODE = 'w'
 if sys.version_info.major == 2:
     READ_TEXT_MODE = 'rb'
+    WRITE_TEXT_MODE = 'wb'
 
 error = configparser.Error
 
@@ -336,7 +338,7 @@ class PrinterConfig:
         logging.info("SAVE_CONFIG to '%s' (backup in '%s')",
                      cfgname, backup_name)
         try:
-            f = open(temp_name, 'wb')
+            f = open(temp_name, WRITE_TEXT_MODE)
             f.write(data)
             f.close()
             os.rename(cfgname, backup_name)

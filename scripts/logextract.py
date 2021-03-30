@@ -7,8 +7,10 @@
 import sys, re, collections, ast
 
 READ_TEXT_MODE = 'r'
+WRITE_TEXT_MODE = 'w'
 if sys.version_info.major == 2:
     READ_TEXT_MODE = 'rb'
+    WRITE_TEXT_MODE = 'wb'
 
 def format_comment(line_num, line):
     return "# %6d: %s" % (line_num, line)
@@ -44,7 +46,7 @@ class GatherConfig:
         if comment is not None:
             self.comments.append(comment)
     def write_file(self):
-        f = open(self.filename, 'wb')
+        f = open(self.filename, WRITE_TEXT_MODE)
         f.write('\n'.join(self.comments + self.config_lines).strip() + '\n')
         f.close()
 
@@ -398,13 +400,13 @@ class GatherShutdown:
         out = [i for s in streams for i in s]
         out.sort()
         out = [i[2] for i in out]
-        f = open(self.filename, 'wb')
+        f = open(self.filename, WRITE_TEXT_MODE)
         f.write('\n'.join(self.comments + out))
         f.close()
         # Produce output gcode stream
         if self.gcode_stream:
             data = [ast.literal_eval(gc[3]) for gc in self.gcode_stream]
-            f = open(self.gcode_filename, 'wb')
+            f = open(self.gcode_filename, WRITE_TEXT_MODE)
             f.write(self.gcode_state + ''.join(data))
             f.close()
 

@@ -3,8 +3,12 @@
 # Copyright (C) 2016-2018  Kevin O'Connor <kevin@koconnor.net>
 #
 # This file may be distributed under the terms of the GNU GPLv3 license.
-import math, logging
+import math, logging, sys
 from . import heaters
+
+WRITE_TEXT_MODE = 'w'
+if sys.version_info.major == 2:
+    WRITE_TEXT_MODE = 'wb'
 
 class PIDCalibrate:
     def __init__(self, config):
@@ -136,7 +140,7 @@ class ControlAutoTune:
         pwm = ["pwm: %.3f %.3f" % (time, value)
                for time, value in self.pwm_samples]
         out = ["%.3f %.3f" % (time, temp) for time, temp in self.temp_samples]
-        f = open(filename, "wb")
+        f = open(filename, WRITE_TEXT_MODE)
         f.write('\n'.join(pwm + out))
         f.close()
 

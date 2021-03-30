@@ -4,9 +4,12 @@
 #
 # This file may be distributed under the terms of the GNU GPLv3 license.
 import sys, os, optparse, logging, subprocess
+
 READ_TEXT_MODE = 'r'
+WRITE_TEXT_MODE = 'w'
 if sys.version_info.major == 2:
     READ_TEXT_MODE = 'rb'
+    WRITE_TEXT_MODE = 'wb'
 
 TEMP_GCODE_FILE = "_test_.gcode"
 TEMP_LOG_FILE = "_test_.log"
@@ -81,7 +84,7 @@ class TestCase:
         if gcode_fname is None:
             gcode_fname = self.relpath(TEMP_GCODE_FILE, 'temp')
             gcode_is_temp = True
-            f = open(gcode_fname, 'wb')
+            f = open(gcode_fname, WRITE_TEXT_MODE)
             f.write('\n'.join(gcode + ['']))
             f.close()
         elif gcode:
